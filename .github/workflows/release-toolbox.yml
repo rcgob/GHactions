@@ -1,15 +1,11 @@
 name: Release Toolbox
 
 on:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - 'main'
-
   push:
     branches:
       - 'main'
+    tags:
+      - '*'
 jobs:
   release-toolbox:
    runs-on: ubuntu-latest
