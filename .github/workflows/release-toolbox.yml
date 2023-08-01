@@ -6,6 +6,7 @@ on:
       - 'main'
     tags:
       - '*'
+      
 jobs:
   release-toolbox:
    runs-on: ubuntu-latest
