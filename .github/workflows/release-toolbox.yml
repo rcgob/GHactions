@@ -9,8 +9,7 @@ on:
 jobs:
   release-toolbox:
    runs-on: ubuntu-latest
-   permissions:
-    id-token: write
+   permissions: write-all
    steps:
      - name: Check out repository
        uses: actions/checkout@v3
