@@ -2,8 +2,6 @@ name: Release Toolbox
 
 on:
   push:
-    branches:
-      - "main"
     tags:
       - "v*"
       
