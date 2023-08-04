@@ -1,5 +1,5 @@
 
-name: Deploy Application
+name: Generate Tag
 
 on:
   workflow_dispatch:
