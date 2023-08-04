@@ -2,9 +2,15 @@
 name: Deploy Application
 
 on:
-  push:
-   branches:
-    - main
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      version:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Write version number'
+        # Input has to be provided for the workflow to run
+        required: true
+        type: string
 
 jobs:
   build:
@@ -15,17 +21,11 @@ jobs:
       with:
           fetch-depth: '0'
 
-    - name: Generate Git Tag
-      id: generate_tag
-      run: |
-        NEW_TAG=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
-        echo "Generated new tag: $NEW_TAG"
-
     - name: Push Git Tag
       run: |
         git config user.name "rcgob"
         git config user.email "rodrigocgob@gmail.com"
-        git tag $NEW_TAG
-        git push origin $NEW_TAG
+        git tag ${{ github.event.inputs.version }}
+        git push origin ${{ github.event.inputs.version }}
 
     # Add your build, test, and deploy steps here
