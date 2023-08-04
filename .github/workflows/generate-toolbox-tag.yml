@@ -1,36 +1,55 @@
+
+# This is a basic workflow that is manually triggered
+
 name: Release Toolbox
-
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
 on:
-  push:
-    tags:
-      - 'vvv*'
-
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      version:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Semver type of new version (major / minor / patch)'
+        # Input has to be provided for the workflow to run
+        required: true
+        type: choice
+        options: 
+        - patch
+        - minor
+        - major
 jobs:
   release-toolbox:
-   runs-on: ubuntu-latest
-   permissions: write-all
-   steps:
-     - name: Check out repository
-       uses: actions/checkout@v2
-       with:
-           fetch-depth: '0'
-     - name: Generate Git Tag
-       id: generate_tag
-       run: |
-        VERSION_PREFIX="v"
-        VERSION_MAJOR_MINOR="1.0"
-        VERSION_PATCH=$(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
-        if [ -z "$VERSION_PATCH" ]; then
-          VERSION_PATCH=0
-        else
-          VERSION_PATCH=$((VERSION_PATCH + 1))
-        fi
-        NEW_TAG="${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.${VERSION_PATCH}"
-        echo "Generated new tag: $NEW_TAG"
-        echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
-     - name: Push Git Tag
-       run: |
-        git config user.name "GitHub Actions"
-        git config user.email "github-actions@users.noreply.github.com"
-        git tag $NEW_TAG
-        git push origin $NEW_TAG
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Check out the content (source branch).  Use a deploy key so that
+    # when we push changes, it will trigger the release workflow
+    # run that runs on: tag. (Using the GitHub token would
+    # not run the workflow to prevent infinite recursion.)
+    - name: Check out source
+      uses: actions/checkout@v2
+      with:
+        ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install npm packages
+      run: npm ci
+
+    - name: Setup Git
+      run: |
+        git config user.name 'rcgob'
+        git config user.email 'rodrigocgob@gmail.com'
+
+    - name: bump version
+      run: npm version ${{ github.event.inputs.version }}
+
+    - name: Push latest version
+      run: git push origin main --follow-tags
