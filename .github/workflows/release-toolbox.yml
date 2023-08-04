@@ -1,4 +1,4 @@
-name: Release Toolbox
+name: 2. Release Toolbox
 
 on:
   push:
