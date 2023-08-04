@@ -1,5 +1,5 @@
 
-name: Generate Tag
+name: 1. Generate Tag
 
 on:
   workflow_dispatch:
