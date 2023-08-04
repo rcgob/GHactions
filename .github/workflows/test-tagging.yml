@@ -2,19 +2,9 @@
 name: Deploy Application
 
 on:
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      version:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Semver type of new version (major / minor / patch)'
-        # Input has to be provided for the workflow to run
-        required: true
-        type: choice
-        options: 
-        - patch
-        - minor
-        - major
+  push:
+   branches:
+    - main
 
 jobs:
   build:
@@ -28,7 +18,8 @@ jobs:
     - name: Generate Git Tag
       id: generate_tag
       run: |
-        NEW_TAG=${{ github.event.inputs.version }}
+        NEW_TAG=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
+        echo "Generated new tag: $NEW_TAG"
 
     - name: Push Git Tag
       run: |
