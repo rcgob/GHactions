@@ -18,7 +18,7 @@ jobs:
     - name: Generate Git Tag
       id: generate_tag
       run: |
-        NEW_TAG="v10.0"
+        NEW_TAG="v10.0.0"
         echo "Generated new tag: $NEW_TAG"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
