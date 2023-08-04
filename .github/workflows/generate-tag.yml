@@ -54,6 +54,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Create Release
-        run: gh release create ${{ github.ref }} --generate-notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: 
+         VERSION=$(git describe --tags --abbrev=0)
+         gh release create $VERSION --generate-notes
+
