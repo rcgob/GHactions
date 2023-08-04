@@ -3,7 +3,7 @@ name: Release Toolbox
 on:
   push:
     tags:
-      - "vvvvv"
+      - "v*"
 
 
 jobs:
