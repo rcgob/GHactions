@@ -29,3 +29,29 @@ jobs:
         git push origin ${{ github.event.inputs.version }}
 
     # Add your build, test, and deploy steps here
+
+  release-toolbox:
+   runs-on: ubuntu-latest
+   permissions: write-all
+   steps:
+     - name: Check out repository
+       uses: actions/checkout@v3
+     - name: Set up MATLAB
+       uses: matlab-actions/setup-matlab@v1
+     - name: Run script
+       uses: matlab-actions/run-command@v1
+       with:
+         command: cd buildUtilities, releaseTask("1.0"), cd ..
+
+  create-github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Create Release
+        run: gh release create ${{ github.ref }} --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
