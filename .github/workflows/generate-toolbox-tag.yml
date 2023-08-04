@@ -2,8 +2,8 @@ name: Release Toolbox
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'vvv*'
 
 jobs:
   release-toolbox:
