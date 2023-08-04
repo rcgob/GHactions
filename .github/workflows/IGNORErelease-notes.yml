@@ -4,9 +4,6 @@ on:
   push:
     tags:
       - 'vvvvv'
-
-name: Create Release
-
 jobs:
 
   create-github-release:
