@@ -1,7 +1,7 @@
 
 # This is a basic workflow that is manually triggered
 
-name: Release Toolbox
+name: Ignore1
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 on:
