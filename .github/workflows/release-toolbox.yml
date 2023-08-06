@@ -57,6 +57,7 @@ jobs:
       - name: Create Release
         run: 
          VERSION="$(git describe --tags --abbrev=0)"
+         echo $VERSION
          gh release create $VERSION --generate-notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
