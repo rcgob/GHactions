@@ -1,5 +1,5 @@
 
-name: Generate Tag
+name: Release Toolbox
 
 on:
   workflow_dispatch:
@@ -30,23 +30,24 @@ jobs:
 
     # Add your build, test, and deploy steps here
 
-  release-toolbox:
-   runs-on: ubuntu-latest
-   needs: build
-   permissions: write-all
-   steps:
-     - name: Check out repository
-       uses: actions/checkout@v3
-     - name: Set up MATLAB
-       uses: matlab-actions/setup-matlab@v1
-     - name: Run script
-       uses: matlab-actions/run-command@v1
-       with:
-         command: cd buildUtilities, releaseTask("1.0"), cd ..
+#  release-toolbox:
+#   runs-on: ubuntu-latest
+#   needs: build
+#   permissions: write-all
+#   steps:
+#     - name: Check out repository
+#       uses: actions/checkout@v3
+#     - name: Set up MATLAB
+#       uses: matlab-actions/setup-matlab@v1
+#     - name: Run script
+#       uses: matlab-actions/run-command@v1
+#       with:
+#         command: cd buildUtilities, releaseTask("1.0"), cd ..
 
   create-github-release:
     name: Create GitHub Release
-    needs: release-toolbox
+    needs: build
+#    needs: release-toolbox
     runs-on: ubuntu-latest
     permissions:
       contents: write
