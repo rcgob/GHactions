@@ -61,7 +61,7 @@ jobs:
          VERSION=$(git describe --tags --abbrev=0)
          NEW_VERSION="${VERSION}"
          echo "Generated new tag $NEW_VERSION"
-         gh release create $NEW_VERSION --generate-notes releases/GHactions-toolbox-installer.mltbx
+         gh release create $NEW_VERSION --generate-notes #releases/GHactions-toolbox-installer.mltbx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
